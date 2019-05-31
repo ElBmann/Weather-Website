@@ -13,7 +13,13 @@ const forecast =(lat, long, callback)=>{
           callback('issue with coordinates', undefined)
        }else{
           callback(undefined, {
-            forecast: body.daily.data[0].summary + 'Temp: '+ body.daily.data[0].temperatureMax
+            forecast: 'Current Forcast: '+ body.currently.summary,
+            temperature: 'Current Temperature: ' + body.currently.temperature+ ' F' ,
+            temperatureMax: 'Temperature Max: ' + body.daily.data[0].temperatureMax + ' F',
+            precipProbability: 'PrecipProbability: ' + body.currently.precipProbability
+            
+
+            
             
           })
        }
