@@ -3,6 +3,7 @@ const express = require('express')
 const hbs = require('hbs')
 const geocode = require('./utils/gecode')
 const forecast = require('./utils/forecast')
+const advice = require('./utils/advice')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -21,14 +22,14 @@ hbs.registerPartials(partials)
 app.use(express.static(publicDirPath))
 
 app.get('',(req,res) => {
-    res.render('index',{
+   return res.render('index',{
         title: 'Weather App',
         name: 'Brian R'
     })
 })
 
 app.get('/about',(req,res)=>{
-    res.render('about',{
+ return res.render('about',{
         title: 'About Me',
         name: 'Brian R'
     })
@@ -36,7 +37,7 @@ app.get('/about',(req,res)=>{
 })
 
 app.get('/help',(req,res) =>{
-    res.render('help',{
+   return res.render('help',{
         title: 'Help',
         name: 'Brian R',
         message: 'A Jay A Day Keeps The Doctor Away :)'
@@ -45,8 +46,9 @@ app.get('/help',(req,res) =>{
 })
 
 app.get('/weather',(req, res) =>{
+
     if(!req.query.address){
-         res.send({
+        return res.send({
             error: 'Hey we need an address to get you the weather'
         })
     }else{
@@ -55,22 +57,35 @@ app.get('/weather',(req, res) =>{
                 return res.send({ error })
 
             }
-        
-            forecast(latitude,longitude,(error,forecast)=>{
-                if(error){
-                   return res.send({ error })
-                }
-                res.send({
-                    forecast: forecast,
-                    location: location,
-                    address: req.query.address
+             //this is where the error is
+            advice(({advice}) =>{
+                console.log('ADVICE: '+advice)
+            //  return res.send({
+            //      advice: advice
+            //  })
+
+                forecast(latitude,longitude,(error,forecast)=>{
+                    if(error){
+                    return res.send({ error })
+                    }else{
+                        return res.send({
+                            forecast: forecast,
+                            location: location,
+                            address: req.query.address,
+                            advice: advice
+                        })
+                
+                    }
+                
+            
                 })
             })
-          
 
         })
         
+        
     }
+   
     
 })
 

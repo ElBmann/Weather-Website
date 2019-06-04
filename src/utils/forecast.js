@@ -18,9 +18,6 @@ const forecast =(lat, long, callback)=>{
             temperatureMax: 'Temperature Max: ' + body.daily.data[0].temperatureMax + ' F',
             precipProbability: 'PrecipProbability: ' + body.currently.precipProbability
             
-
-            
-            
           })
        }
  
